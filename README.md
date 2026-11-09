@@ -32,10 +32,26 @@ or
 worktimer stop
 ```
 
+To show the working time of a specific day enter:
+
+```bash
+uv run worktimer today
+or
+worktimer print-worktime [date]
+```
+
 To show the current working time of today enter:
 
 ```bash
 uv run worktimer today
 or
-worktimer today
+worktimer print-today
+```
+
+To export it into a PDF enter:
+
+```bash
+uv run worktimer export
+or
+worktimer export
 ```
