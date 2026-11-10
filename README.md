@@ -35,17 +35,25 @@ worktimer stop
 To show the working time of a specific day enter:
 
 ```bash
-uv run worktimer today
+uv run worktimer print-worktime [year-month-day]
 or
-worktimer print-worktime [date]
+worktimer print-worktime [year-month-day]
 ```
 
 To show the current working time of today enter:
 
 ```bash
-uv run worktimer today
+uv run worktimer print-today
 or
 worktimer print-today
+```
+
+To show the total working time of a specific month enter:
+
+```bash
+uv run worktimer print_total_worktime_month [year-month]
+or
+worktimer print_total_worktime_month [year-month]
 ```
 
 To export it into a PDF enter:

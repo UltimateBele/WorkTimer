@@ -39,7 +39,7 @@ def get_session_start_and_stop_times(session):
     stop_time = session["stop_time"]
     return start_time, stop_time
 
-def get_session_time(session, count_running=True):
+def get_session_time(session, count_running=True) -> float:
     start_time, stop_time = get_session_start_and_stop_times(session)
     if stop_time is not None:
         return stop_time - start_time
@@ -48,7 +48,7 @@ def get_session_time(session, count_running=True):
 
     return 0.0
 
-def get_sessions_time(sessions, count_running=True):
+def get_sessions_time(sessions, count_running=True) -> float:
     total_time = 0.0
     for session in sessions:
         total_time += get_session_time(session, count_running)
@@ -96,6 +96,28 @@ def print_today():
     today = f"{date.today()}"
     print_worktime(today)
 
+def get_sessions_or_empty_in_month(data, year_month):
+    sessions = []
+    for i in range(1, 32):
+        days = f"{year_month}-{i}"
+        sessions.append(get_sessions_for_date(data, days))
+
+    return sessions
+
+def get_total_worktime_month(data, year_month) -> float:
+    total_time = 0
+    for sessions in get_sessions_or_empty_in_month(data, year_month):
+        total_time += get_sessions_time(sessions)
+
+    return total_time
+
+@app.command()
+def print_total_worktime_month(year_month):
+    data = get_data()
+    time = get_total_worktime_month(data, f"{year_month}")
+    hours, minutes, seconds = get_hours_minutes_seconds_from_seconds(time)
+    print(f"In the month of {year_month} you've worked a total of {hours}h {minutes}m {seconds}s")
+
 def is_timer_running(data):
     return data.get("is_running", False)
 
@@ -133,8 +155,7 @@ def stop():
         print("Timer is not running.")
         return
 
-    if data.get("is_running"):
-        data["is_running"] = False
+    data["is_running"] = False
 
     today = f"{date.today()}"
 
@@ -155,7 +176,6 @@ def export():
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font('Helvetica', size=12)
-
 
     data = get_data()
     today = f"{date.today()}"
